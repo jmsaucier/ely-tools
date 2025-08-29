@@ -1,0 +1,28 @@
+{
+  "name": "ely-tools",
+  "version": "1.0.0",
+  "description": "A collection of useful CLI tools",
+  "main": "index.js",
+  "bin": {
+    "ely": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "cli",
+    "tools",
+    "directory",
+    "file-size",
+    "utility"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "commander": "^14.0.0"
+  }
+}
