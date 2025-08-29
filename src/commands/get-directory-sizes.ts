@@ -6,7 +6,7 @@ import {
   CommandDefinition,
   DirectoryItem,
   GetDirectorySizesOptions,
-} from './types';
+} from '../types';
 
 /**
  * Format bytes to human readable format

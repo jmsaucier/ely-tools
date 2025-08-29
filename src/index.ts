@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { getDirectorySizesCommand } from './get-directory-sizes';
+import { getDirectorySizesCommand } from './commands/get-directory-sizes';
 import { CommandDefinition } from './types';
 
 const commands: CommandDefinition[] = [getDirectorySizesCommand];
