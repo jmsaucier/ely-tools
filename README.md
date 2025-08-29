@@ -1,131 +1,104 @@
-# ely-tools
+# Ely Tools
 
-A collection of useful CLI tools for developers.
+A collection of useful CLI tools built with TypeScript.
+
+## Features
+
+- **Directory Size Analysis**: Get detailed information about directory sizes with `ds` command
+- **TypeScript**: Full TypeScript support with proper type definitions
+- **Modern CLI**: Built with Commander.js for a professional command-line experience
 
 ## Installation
 
-### Global Installation (Recommended)
-
-```bash
-npm install -g .
-```
-
-This will make the `ely` command available globally on your system.
-
-### Local Development
-
 ```bash
 npm install
-npm link
-```
-
-## Usage
-
-### Main CLI
-
-```bash
-ely <command> [options]
-```
-
-### Available Commands
-
-#### Directory Sizes
-
-Analyze and display directory and file sizes in a tree-like format.
-
-```bash
-ely dir-sizes <directory> [max-depth]
-```
-
-**Arguments:**
-- `directory` - Path to the directory to scan
-- `max-depth` - Maximum depth to traverse (optional, 0 = unlimited)
-
-**Examples:**
-```bash
-# Scan current directory
-ely dir-sizes .
-
-# Scan specific directory with depth limit
-ely dir-sizes ./src 3
-
-# Scan backend directory
-ely dir-sizes ./backend
-```
-
-**Output:**
-```
-📂 Scanning directory: /path/to/directory
-🔍 Max depth: unlimited
-
-├── 📁 src (1.2 MB)
-│   ├── 📄 index.js (2.1 KB)
-│   └── 📁 components (856 KB)
-│       ├── 📄 Header.js (15.2 KB)
-│       └── 📄 Footer.js (8.7 KB)
-└── 📄 package.json (1.1 KB)
-
-⏱️  Scan completed in 45ms
-```
-
-### Direct Tool Access
-
-You can also run individual tools directly:
-
-```bash
-# Using the main CLI
-ely dir-sizes ./src
-
-# Using the direct command
-ely-dir-sizes ./src
-
-# Using npm scripts
-npm run dir-sizes ./src
-```
-
-### Help and Version
-
-```bash
-# Show help
-ely help
-
-# Show version
-ely version
 ```
 
 ## Development
 
-### Project Structure
+### Prerequisites
 
-```
-ely-tools/
-├── index.js                 # Main CLI entry point
-├── get-directory-sizes.js   # Directory sizes tool
-├── package.json            # Package configuration
-└── README.md              # This file
-```
+- Node.js >= 14.0.0
+- npm
 
-### Adding New Tools
+### Setup
 
-1. Create a new tool file (e.g., `new-tool.js`)
-2. Add the shebang line: `#!/usr/bin/env node`
-3. Update `package.json` to include the new tool in the `bin` field
-4. Add the tool to the main CLI in `index.js`
-5. Update this README with usage instructions
+1. Install dependencies:
 
-### Testing
+   ```bash
+   npm install
+   ```
+
+2. Build the project:
+   ```bash
+   npm run build
+   ```
+
+### Available Scripts
+
+- `npm run build` - Compile TypeScript to JavaScript
+- `npm run dev` - Watch mode for development (recompiles on file changes)
+- `npm run clean` - Remove build artifacts
+- `npm start` - Run the compiled application
+- `npm test` - Run tests (not implemented yet)
+
+## Usage
+
+### Directory Size Analysis
+
+Analyze directory sizes with the `ds` command:
 
 ```bash
-# Test the main CLI
-ely help
+# Analyze current directory
+npm start -- ds
 
-# Test directory sizes tool
-ely dir-sizes .
+# Analyze specific directory
+npm start -- ds /path/to/directory
 
-# Test direct access
-ely-dir-sizes .
+# Show help
+npm start -- help
 ```
+
+### Global Installation
+
+You can also install the tool globally:
+
+```bash
+npm install -g .
+ely ds /path/to/directory
+```
+
+## Project Structure
+
+```
+src/
+├── index.ts              # Main CLI entry point
+├── get-directory-sizes.ts # Directory size analysis command
+└── types.ts              # TypeScript type definitions
+
+dist/                     # Compiled JavaScript output
+├── index.js
+├── get-directory-sizes.js
+└── types.js
+```
+
+## TypeScript Configuration
+
+The project uses a strict TypeScript configuration (`tsconfig.json`) with:
+
+- ES2020 target
+- CommonJS modules
+- Strict type checking
+- Source maps and declaration files
+- Output directory: `./dist`
+
+## Contributing
+
+1. Make changes in the `src/` directory
+2. Run `npm run build` to compile
+3. Test your changes with `npm start`
+4. Submit a pull request
 
 ## License
 
-ISC 
+ISC

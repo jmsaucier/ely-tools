@@ -2,13 +2,16 @@
   "name": "ely-tools",
   "version": "1.0.0",
   "description": "A collection of useful CLI tools",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
-    "ely": "./index.js"
+    "ely": "./dist/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "cli",
@@ -24,5 +27,9 @@
   },
   "dependencies": {
     "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
   }
 }

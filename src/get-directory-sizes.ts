@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
+import {
+  CommandDefinition,
+  DirectoryItem,
+  GetDirectorySizesOptions,
+} from './types';
 
 /**
  * Format bytes to human readable format
- * @param {number} bytes - Number of bytes
- * @returns {string} Formatted size string
+ * @param bytes - Number of bytes
+ * @returns Formatted size string
  */
-function formatBytes(bytes) {
+function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
 
   const k = 1024;
@@ -20,10 +25,10 @@ function formatBytes(bytes) {
 
 /**
  * Get size of a file or directory recursively
- * @param {string} filePath - Path to file or directory
- * @returns {number} Size in bytes
+ * @param filePath - Path to file or directory
+ * @returns Size in bytes
  */
-function getSize(filePath) {
+function getSize(filePath: string): number {
   const stats = fs.statSync(filePath);
 
   if (stats.isDirectory()) {
@@ -37,7 +42,9 @@ function getSize(filePath) {
     } catch (error) {
       // Skip directories we can't read
       console.warn(
-        `Warning: Cannot read directory ${filePath}: ${error.message}`,
+        `Warning: Cannot read directory ${filePath}: ${
+          (error as Error).message
+        }`,
       );
     }
     return totalSize;
@@ -48,24 +55,24 @@ function getSize(filePath) {
 
 /**
  * Recursively list all files and directories with their sizes
- * @param {string} dirPath - Directory path to scan
- * @param {string} prefix - Prefix for indentation
- * @param {number} maxDepth - Maximum depth to traverse (0 = unlimited)
- * @param {number} currentDepth - Current depth level
- * @param {number} topCount - Number of top directories to show
+ * @param dirPath - Directory path to scan
+ * @param prefix - Prefix for indentation
+ * @param maxDepth - Maximum depth to traverse (0 = unlimited)
+ * @param currentDepth - Current depth level
+ * @param topCount - Number of top directories to show
  */
 function listDirectoryContents(
-  dirPath,
-  prefix = '',
-  maxDepth = 0,
-  currentDepth = 0,
-  topCount = 10,
-) {
+  dirPath: string,
+  prefix: string = '',
+  maxDepth: number = 0,
+  currentDepth: number = 0,
+  topCount: number = 10,
+): DirectoryItem[] {
   if (currentDepth > maxDepth) {
     return [];
   }
 
-  const directories = [];
+  const directories: DirectoryItem[] = [];
 
   try {
     const items = fs.readdirSync(dirPath);
@@ -101,11 +108,15 @@ function listDirectoryContents(
           directories.push(...subDirectories);
         }
       } catch (error) {
-        console.warn(`Warning: Cannot access ${itemPath}: ${error.message}`);
+        console.warn(
+          `Warning: Cannot access ${itemPath}: ${(error as Error).message}`,
+        );
       }
     }
   } catch (error) {
-    console.error(`Error reading directory ${dirPath}: ${error.message}`);
+    console.error(
+      `Error reading directory ${dirPath}: ${(error as Error).message}`,
+    );
   }
 
   // If this is the root call (currentDepth === 0), sort and return top results
@@ -138,14 +149,11 @@ function listDirectoryContents(
 
 /**
  * Main function to get directory sizes
- * @param {string} directory - Directory path to scan
- * @param {number} maxDepth - Maximum depth to traverse (0 = unlimited)
- * @returns {boolean} - Returns true if successful, false if error
+ * @param options - Options object containing directory, maxDepth, and topCount
+ * @returns Returns true if successful, false if error
  */
-function getDirectorySizes({ directory, maxDepth = 2, topCount = 0 }) {
-  directory = directory || '.';
-  maxDepth = maxDepth || 2;
-  topCount = topCount || 10;
+function getDirectorySizes(options: GetDirectorySizesOptions): boolean {
+  const { directory = '.', maxDepth = 2, topCount = 10 } = options;
 
   try {
     if (!fs.existsSync(directory)) {
@@ -183,12 +191,12 @@ function getDirectorySizes({ directory, maxDepth = 2, topCount = 0 }) {
 
     return true;
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    console.error(`Error: ${(error as Error).message}`);
     return false;
   }
 }
 
-module.exports = {
+export const getDirectorySizesCommand: CommandDefinition = {
   command: 'ds',
   description: 'Show directory and file sizes',
   arguments: [
@@ -213,3 +221,6 @@ module.exports = {
   ],
   handler: getDirectorySizes,
 };
+
+// For backward compatibility
+export { getDirectorySizes };

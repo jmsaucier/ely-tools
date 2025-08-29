@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-const { Command } = require('commander');
-const getDirectorySizes = require('./get-directory-sizes');
-const commands = [getDirectorySizes];
+import { Command } from 'commander';
+import { getDirectorySizesCommand } from './get-directory-sizes';
+import { CommandDefinition } from './types';
+
+const commands: CommandDefinition[] = [getDirectorySizesCommand];
 
 // Create the main program
 const program = new Command();
@@ -11,7 +13,7 @@ const program = new Command();
 program
   .name('ely')
   .description('A collection of useful CLI tools')
-  .version(require('./package.json').version);
+  .version(require('../package.json').version);
 
 commands.forEach(command => {
   let cliCommand = program
@@ -22,9 +24,9 @@ commands.forEach(command => {
     cliCommand.argument(arg.name, arg.description);
   });
 
-  cliCommand.action((...args) => {
+  cliCommand.action((...args: any[]) => {
     let options = args[args.length - 1];
-    let argsObject = {};
+    let argsObject: Record<string, any> = {};
     command.arguments.forEach((arg, index) => {
       argsObject[arg.name] = args[index];
     });
