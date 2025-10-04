@@ -2,9 +2,15 @@
 
 import { Command } from 'commander';
 import { getDirectorySizesCommand } from './commands/get-directory-sizes';
+import { execCommandDefinition } from './commands/exec-command';
+import { packCommandDefinition } from './commands/pack-command';
 import { CommandDefinition } from './types';
 
-const commands: CommandDefinition[] = [getDirectorySizesCommand];
+const commands: CommandDefinition[] = [
+  getDirectorySizesCommand,
+  execCommandDefinition,
+  packCommandDefinition,
+];
 
 // Create the main program
 const program = new Command();
@@ -23,6 +29,13 @@ commands.forEach(command => {
   command.arguments.forEach(arg => {
     cliCommand.argument(arg.name, arg.description);
   });
+
+  // Add options
+  if (command.options) {
+    command.options.forEach(option => {
+      cliCommand.option(`--${option.name}`, option.description);
+    });
+  }
 
   cliCommand.action((...args: any[]) => {
     let options = args[args.length - 1];

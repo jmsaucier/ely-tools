@@ -32,3 +32,14 @@ export interface GetDirectorySizesOptions {
   maxDepth?: number;
   topCount?: number;
 }
+
+export interface ExecCommandOptions {
+  directory?: string;
+  exec: string;
+  maxDepth?: number;
+  packageName?: string;
+}
+
+export interface PackCommandOptions {
+  directory?: string;
+}
